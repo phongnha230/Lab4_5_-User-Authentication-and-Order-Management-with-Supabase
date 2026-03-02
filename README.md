@@ -17,8 +17,9 @@
 ### 2. Xác thực người dùng (Authentication)
 
 - Tích hợp **Supabase Auth** để quản lý người dùng.
-- **Đăng ký (Register):** Đăng ký tài khoản mới với Email và Mật khẩu.
-- **Đăng nhập (Login):** Người dùng yêu cầu đăng nhập trước khi tiến hành thanh toán.
+- **Đăng ký (Register):** Đăng ký tài khoản mới với Email, Mật khẩu và xác nhận mật khẩu. Có validation đầy đủ (độ dài tối thiểu, kiểm tra khớp mật khẩu).
+- **Đăng nhập (Login):** Hỗ trợ đăng nhập bằng **Email/Mật khẩu** hoặc **Google OAuth** (nút "Tiếp tục với Gmail").
+- **Hiện/Ẩn mật khẩu:** Nút toggle icon 👁️ (Eye/EyeOff từ Lucide React) trên tất cả các ô nhập mật khẩu ở cả trang Login và Register.
 - **Đăng xuất (Logout):** Xóa session an toàn trên mọi thiết bị.
 - **Protected Routes:** Các trang như Giỏ hàng (Checkout) và Lịch sử mua hàng được bảo vệ, tự động điều hướng người chưa đăng nhập về trang Đăng nhập.
 
@@ -69,6 +70,8 @@ VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 
 _(Lưu ý: Thay thế các giá trị trên bằng thông tin Project thật của bạn do Supabase cấp)._
 
+> **Cấu hình Google OAuth:** Để tính năng đăng nhập Google hoạt động, vào **Supabase Dashboard → Authentication → Providers → Google** và bật Google provider lên, sau đó điền `Client ID` và `Client Secret` từ Google Cloud Console. Nhớ thêm URL callback của Supabase vào danh sách "Authorized redirect URIs" trong Google Cloud Console.
+
 ### Bước 4: Chạy môi trường phát triển (Dev Server)
 
 ```bash
@@ -106,6 +109,14 @@ src/
 ├── App.jsx          # Component Layout (Header, Footer, Router Outlet)
 └── main.jsx         # Entry point (Router Provider)
 ```
+
+## 🔄 Changelog
+
+### Cập nhật gần nhất
+
+- ✅ **Trang Register hoàn chỉnh:** Thêm trường xác nhận mật khẩu (`confirmPassword`) với validation: kiểm tra độ dài tối thiểu 6 ký tự và khớp mật khẩu trước khi gửi lên Supabase.
+- ✅ **Password Visibility Toggle:** Thêm nút hiện/ẩn mật khẩu (icon Eye/EyeOff) vào tất cả các ô input mật khẩu trên trang **Login** và **Register** (bao gồm cả ô xác nhận mật khẩu).
+- ✅ **Google OAuth Login:** Tích hợp nút "Tiếp tục với Gmail" trên trang Login, sử dụng `supabase.auth.signInWithOAuth` để đăng nhập qua tài khoản Google.
 
 ## 👩‍💻 Tác giả
 
