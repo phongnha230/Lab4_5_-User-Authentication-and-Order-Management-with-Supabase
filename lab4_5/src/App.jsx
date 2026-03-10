@@ -9,13 +9,14 @@ import ChatInterface from "./components/ChatInterface";
 
 function App() {
   const { user } = useAuth();
-  const { cartItemCount } = useCart();
+  const { cartItemCount, clearCart } = useCart();
   const navigate = useNavigate();
   const location = useLocation();
   const [isChatOpen, setIsChatOpen] = useState(false);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
+    clearCart();
     navigate('/login');
   };
 
