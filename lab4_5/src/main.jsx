@@ -11,6 +11,7 @@ import { CartProvider } from './context/CartContext'
 import HomePage from './page/HomePage'
 import Cart from './page/Cart' // ensure we import Cart
 import OrderHistory from './page/OrderHistory'
+import ChatPage from './page/ChatPage'
 import ProtectedRoute from './components/ProtectedRoute'
 
 const router = createBrowserRouter([

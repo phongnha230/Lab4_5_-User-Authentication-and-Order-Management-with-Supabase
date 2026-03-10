@@ -1,15 +1,18 @@
 import { Outlet, Link, useNavigate, useLocation } from "react-router-dom";
+import { useState } from "react";
 import { useAuth } from "./context/AuthContext";
 import { useCart } from "./context/CartContext";
 import { supabase } from "./lib/supabase";
 import { Button } from "@/components/ui/button";
-import { ShoppingCart, User, LogOut, Package, Hexagon } from "lucide-react";
+import { ShoppingCart, User, LogOut, Package, Hexagon, MessageSquare, X } from "lucide-react";
+import ChatInterface from "./components/ChatInterface";
 
 function App() {
   const { user } = useAuth();
   const { cartItemCount } = useCart();
   const navigate = useNavigate();
   const location = useLocation();
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -123,6 +126,42 @@ function App() {
       <footer className="mt-auto py-6 text-center bg-white border-t text-gray-500">
         <p>© 2026 - TechStore Lab 4+5 Project</p>
       </footer>
+
+      {/* Floating Chat Widget */}
+      <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-4">
+        {isChatOpen && user && (
+          <div className="shadow-2xl mb-2">
+            <ChatInterface onClose={() => setIsChatOpen(false)} />
+          </div>
+        )}
+        
+        <Button
+          onClick={() => {
+            if (!user) {
+              navigate('/login');
+              return;
+            }
+            setIsChatOpen(!isChatOpen);
+          }}
+          className={`h-14 w-14 rounded-full shadow-lg transition-all duration-300 active:scale-90 flex items-center justify-center ${
+            isChatOpen 
+              ? 'bg-rose-500 hover:bg-rose-600 rotate-90' 
+              : 'bg-gradient-to-br from-indigo-600 to-blue-600 hover:shadow-indigo-500/40 hover:-translate-y-1'
+          }`}
+        >
+          {isChatOpen ? (
+            <X className="w-6 h-6 text-white" />
+          ) : (
+            <div className="relative">
+              <MessageSquare className="w-6 h-6 text-white" />
+              <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-indigo-500 border-2 border-white"></span>
+              </span>
+            </div>
+          )}
+        </Button>
+      </div>
     </div>
   );
 }
